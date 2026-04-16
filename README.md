@@ -101,6 +101,7 @@ L'application est accessible sur : http://localhost:8000
 ---
 
 ## Structure du projet
+```plaintext
 app/
 ├── Http/
 │   ├── Controllers/
