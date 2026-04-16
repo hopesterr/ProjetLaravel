@@ -1,59 +1,149 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# TaskFlow — Gestionnaire de tâches collaboratif
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Application web Laravel permettant de gérer des tâches organisées par tableaux,
+avec tags, filtres de statut et gestion des rôles (admin / utilisateur).
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Fonctionnalités
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Authentification complète (connexion, inscription, profil)
+- Création et gestion de tableaux de travail
+- Création et gestion de tâches avec statut, description et date d'échéance
+- Association de tags colorés aux tâches (relation N:N)
+- Filtres de tâches par statut
+- Dashboard avec statistiques
+- Gestion des droits : admin vs utilisateur classique
+- Interface Bootstrap 5 responsive
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Stack technique
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- PHP 8.2+
+- Laravel 11
+- Laravel Breeze (authentification Blade)
+- Eloquent ORM
+- MySQL
+- Bootstrap 5.3
+- Bootstrap Icons
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Installation
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Prérequis
 
-### Premium Partners
+- PHP >= 8.2
+- Composer
+- Node.js + npm
+- MySQL
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Étapes
 
-## Contributing
+```bash
+# 1. Cloner le dépôt
+git clone https://github.com/votre-repo/taskflow.git
+cd taskflow
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# 2. Installer les dépendances PHP
+composer install
 
-## Code of Conduct
+# 3. Installer les dépendances JS
+npm install && npm run build
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# 4. Copier le fichier d'environnement
+cp .env.example .env
 
-## Security Vulnerabilities
+# 5. Générer la clé d'application
+php artisan key:generate
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Configuration de la base de données
 
-## License
+Éditer `.env` :
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=taskflow
+DB_USERNAME=root
+DB_PASSWORD=
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Créer la base de données :
+
+```sql
+CREATE DATABASE taskflow CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+### Migration et seed
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+### Lancer le serveur
+
+```bash
+php artisan serve
+```
+
+L'application est accessible sur : http://localhost:8000
+
+---
+
+## Comptes de test
+
+| Rôle | Email | Mot de passe |
+|---|---|---|
+| Admin | admin@taskflow.test | password |
+| Utilisateur | user@taskflow.test | password |
+
+---
+
+## Structure du projet
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── BoardController.php
+│   │   ├── TaskController.php
+│   │   └── DashboardController.php
+│   └── Requests/
+│       ├── StoreBoardRequest.php
+│       ├── UpdateBoardRequest.php
+│       ├── StoreTaskRequest.php
+│       └── UpdateTaskRequest.php
+├── Models/
+│   ├── User.php
+│   ├── Board.php
+│   ├── Task.php
+│   └── Tag.php
+database/
+├── factories/
+├── migrations/
+└── seeders/
+resources/views/
+├── layouts/app.blade.php
+├── components/flash-messages.blade.php
+├── dashboard.blade.php
+├── boards/
+│   ├── index.blade.php
+│   ├── create.blade.php
+│   ├── show.blade.php
+│   └── edit.blade.php
+└── tasks/
+├── index.blade.php
+├── create.blade.php
+├── show.blade.php
+└── edit.blade.php
+routes/web.php
+
+---
+
+## Choix techniques
+
+- **Breeze** : solution officielle simple, légère, adaptée à un projet Blade
+- **Contrôle d'accès manuel** : méthode `isAdmin()` + vérification `user_id` dans les contrôleurs, plus lisible qu'une Policy complète pour ce périmètre
+- **Resource Controllers** : conformes aux conventions Laravel RESTful
+- **Form Requests** : validation découplée, réutilisable, testable
+- **Cascade delete** : suppression automatique des tâches et tags liés
+- **Bootstrap CDN** : pas de compilation Sass, démarrage immédiat
